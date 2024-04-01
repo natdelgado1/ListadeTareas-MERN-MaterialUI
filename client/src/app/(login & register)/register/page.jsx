@@ -1,10 +1,8 @@
-import { Fragment } from "react";
+import RegisterForm from "@/components/Forms/RegisterForm";
 
 const Register = () => {
     return (
-        <Fragment>
-            <h1>Register</h1>
-        </Fragment>
+       <RegisterForm/>
     )
 }
 export default Register;

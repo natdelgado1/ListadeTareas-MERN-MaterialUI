@@ -1,10 +1,12 @@
-import { Fragment } from "react";
+"use client"
+import LoginForm from "@/components/Forms/LoginForm.jsx";
 
-const Login = () => {
-    return (
-        <Fragment>
-            <h1>Login</h1>
-        </Fragment>
+
+const LoginPage = () => {
+    return(
+     
+            <LoginForm/>
     )
-}
-export default Login;
+            
+};
+export default LoginPage;

@@ -16,7 +16,9 @@ const transporter = nodemailer.createTransport({
 });
 
     module.exports.sendConfirmationEmail = (toEmail) => {
-        return new Promise(async(resolve, reject) => {      
+        console.log(toEmail);
+        return new Promise(async(resolve, reject) => {
+                  
             try {
                 const info = await transporter.sendMail({
                     from: '"Not Reply Lista de Tareas 👻" <natdelgadodev@gmail.com>', // sender address

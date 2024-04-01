@@ -11,7 +11,7 @@ const { generateTempToken } = require("../util/generateToken");
 module.exports.createUser = async (req, res) => {
   try {
     const newUser = await User.create(req.body);
-    const emailResponse = sendConfirmationEmail(req.body);
+    const emailResponse = sendConfirmationEmail(req.body.email);
     res.status(200);
     res.json(newUser);
     console.log(emailResponse);
