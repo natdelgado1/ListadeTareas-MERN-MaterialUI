@@ -19,7 +19,6 @@ const passwordTokenSchema = new mongoose.Schema(
     }, {timestamps: true, versionKey: false}
 )
 passwordTokenSchema.pre('save', function (next) {
-    this.token = generateTempToken(6);
     bcrypt.hash(this.token, 10)
         .then(hash => {
             this.token = hash;

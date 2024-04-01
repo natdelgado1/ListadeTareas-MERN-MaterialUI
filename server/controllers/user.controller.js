@@ -187,11 +187,11 @@ module.exports.passwordResetToken = async (req, res) => {
 }
 
 module.exports.passwordReset = async (req, res) => {
-  const { email, password, confirmPassword, token } = req.body;
+  const { email, password, token } = req.body;
   const data = {
-      password, confirmPassword
+      password
   }
-  console.log(email, password, confirmPassword, token);
+  console.log(email, password, token);
   try {
       /* Busca el usuario por email */
       const user = await User.findOne({ email: email });
@@ -203,7 +203,9 @@ module.exports.passwordReset = async (req, res) => {
       }
       /* Busca si el usuario tiene token activo */
       const activeToken = await PasswordToken.findOne({ user: user._id });
-      console.log(token);
+      console.log("User _id: "+user._id);
+      console.log("Token : "+token);
+      console.log("Token encontrado: "+activeToken);
       /* Si no hay token o el token ya no es válido */
       if (!activeToken || !activeToken.valid) {
           res.status(401);

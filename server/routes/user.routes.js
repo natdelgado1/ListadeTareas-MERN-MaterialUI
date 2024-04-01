@@ -6,6 +6,7 @@ const { authenticate } = require('../config/jwt.config');
 
 /* Recuperacion Password */
 router.get("/passwordReset", userController.passwordResetToken);
+router.patch("/passwordReset", userController.passwordReset);
 
 /* Rutas Basicas del CRUD */
 router.post("", userController.createUser);
