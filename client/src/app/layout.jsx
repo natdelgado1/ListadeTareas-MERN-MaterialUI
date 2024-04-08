@@ -1,8 +1,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import TopNav from "@/components/navs/TopNav";
-
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {

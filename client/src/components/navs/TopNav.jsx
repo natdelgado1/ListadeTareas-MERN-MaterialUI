@@ -20,8 +20,7 @@ const TopNav = () =>  {
 
   return (
     <ThemeProvider theme={theme}>
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
           <IconButton
             size="large"
@@ -40,7 +39,6 @@ const TopNav = () =>  {
           <Button color="inherit" onClick={() => handleRedirect("/login")}>Login</Button>
         </Toolbar>
       </AppBar>
-    </Box>
     </ThemeProvider>
   );
 }

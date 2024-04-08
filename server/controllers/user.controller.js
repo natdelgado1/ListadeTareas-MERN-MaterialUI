@@ -1,6 +1,6 @@
+const User = require("./../models/user.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
-const User = require("./../models/user.model");
 const { sendConfirmationEmail, sendPasswordToken } = require("../config/email.config");
 const PasswordToken = require("../models/passwordToken.model");
 const secretKey = process.env.JWT_SECRET_KEY;
@@ -16,7 +16,6 @@ module.exports.createUser = async (req, res) => {
     res.json(newUser);
     console.log(emailResponse);
   } catch (error) {
-    console.log(error);
     res.status(500);
     res.json(error);
   }
