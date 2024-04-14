@@ -6,7 +6,6 @@ import { theme } from "@/theme";
 import { useEffect, useState } from "react";
 import Fab from "@mui/material/Fab";
 import { blue } from "@mui/material/colors";
-
 import {
   AddCircleOutline,
   AddOutlined,
@@ -24,17 +23,21 @@ import {
   PriorityHighOutlined,
   ScheduleOutlined,
 } from "@mui/icons-material";
-import { findAllTasks, updateStatus } from "@/app/api/route";
+import { createTask, findAllTasks, updateStatus } from "@/app/api/route";
 
-const BoardList = () => {
-  const [tasks, setTasks] = useState([]);
-  const [newTask, setNewTask] = useState(false);
-
+const BoardList = ({ addNewTask }) => {
   const date = new Date();
-
-  const [taskDate, setTaskDate] = useState(date.toISOString().substring(0,10));
-  date.setDate(date.getDate()+1);
-  const [taskDeadline, setTaskdeadline] = useState(date.toISOString().substring(0,10));
+  const [tasks, setTasks] = useState([]);
+  const [newTask, setNewTask] = useState(addNewTask || false);
+  const [taskDate, setTaskDate] = useState(date.toISOString().substring(0, 10));
+  const [taskTitle, setTaskTitle] = useState("");
+  const [taskDescription, setTaskDescription] = useState("");
+  const [taskPriority, setTaskPriority] = useState("low");
+  const [taskStatus, setTaskStatus] = useState("pending");
+  date.setDate(date.getDate() + 1);
+  const [taskDeadline, setTaskdeadline] = useState(
+    date.toISOString().substring(0, 10)
+  );
 
   const fetchAllTasks = () => {
     findAllTasks()
@@ -44,6 +47,33 @@ const BoardList = () => {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const handleTaskCreation = async () => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      const data = {
+        title: taskTitle,
+        description: taskDescription,
+        priority: taskPriority,
+        status: taskStatus,
+        taskDate: taskDate,
+        deadline: taskDeadline,
+        userId: user._id,
+      };
+      try {
+        const result = await createTask(data);
+        console.log(result);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const handleKeyPress = async (event) => {
+    if (event.key === "Enter") {
+      await handleTaskCreation();
+    }
   };
 
   const handleChangeStatus = (task) => {
@@ -67,7 +97,7 @@ const BoardList = () => {
   return (
     <ThemeProvider theme={theme}>
       <Fab
-      onClick={(e)=>setNewTask(!newTask)}
+        onClick={(e) => setNewTask(!newTask)}
         sx={{
           position: "absolute",
           bottom: 16,
@@ -77,9 +107,9 @@ const BoardList = () => {
         aria-label={"Add task"}
         color={"primary"}
       >
-        <AddOutlined /> 
+        <AddOutlined />
       </Fab>
-      <table className="w-full border-collapse border border-gray-200 m-2 text-[#4D4D4D] p-2">
+      <table className="w-full border-collapse border border-gray-200 text-[#4D4D4D] py-2">
         <thead>
           <tr className="text-left">
             <th className="border border-gray-200 px-2 py-2 font-normal">
@@ -106,32 +136,67 @@ const BoardList = () => {
           {newTask === true && (
             <tr className="shadow-lg ">
               <td className="border border-gray-200 ">
-                <input className="px-2 py-2 w-full" type="text" placeholder="Titulo de la tarea"/>
+                <input
+                  className="px-2 py-2 w-full"
+                  type="text"
+                  placeholder="Titulo de la tarea"
+                  value={taskTitle}
+                  onChange={(e) => setTaskTitle(e.target.value)}
+                  onKeyDown={handleKeyPress}
+                />
               </td>
               <td className="border  border-gray-200 ">
-                <input className="px-2 py-2 w-full" type="text" placeholder="Descripcion de la tarea"/>
+                <input
+                  className="px-2 py-2 w-full"
+                  type="text"
+                  placeholder="Descripcion de la tarea"
+                  value={taskDescription}
+                  onChange={(e) => setTaskDescription(e.target.value)}
+                  onKeyDown={handleKeyPress}
+                />
               </td>
               <td className="border  border-gray-200 ">
-                <select className="px-2 py-2 w-full" type="text" defaultValue={'low'}>
+                <select
+                  className="px-2 py-2 w-full"
+                  type="text"
+                  onChange={(e) => setTaskPriority(e.target.value)}
+                  value={taskPriority}
+                >
                   <option value="low">Low</option>
                   <option value="medium">Medium</option>
                   <option value="high">High</option>
                 </select>
               </td>
               <td className="border  border-gray-200 ">
-                <select className="px-2 py-2 w-full" type="text" defaultValue={'pending'}>
+                <select
+                  className="px-2 py-2 w-full"
+                  type="text"
+                  onChange={(e) => setTaskStatus(e.target.value)}
+                  value={taskStatus}
+                >
                   <option value="pending">Pending</option>
                   <option value="completed">Completed</option>
                 </select>
               </td>
               <td className="border  border-gray-200">
-                <input className="px-2 py-2 w-full" type="date" value={taskDate} onChange={(e)=>setTaskDate(e.target.value)}/>
+                <input
+                  className="px-2 py-2 w-full"
+                  type="date"
+                  value={taskDate}
+                  onChange={(e) => setTaskDate(e.target.value)}
+                />
                 {/* <input className="px-2 py-2 w-full" type="time"/> */}
               </td>
               <td className="border  border-gray-200">
-              <input className="px-2 py-2 w-full" type="date" value={taskDeadline} onChange={(e)=>setTaskdeadline(e.target.value)}/>
+                <input
+                  className="px-2 py-2 w-full"
+                  type="date"
+                  value={taskDeadline}
+                  onChange={(e) => setTaskdeadline(e.target.value)}
+                />
                 {/* <input className="px-2 py-2 w-full" type="time"/> */}
               </td>
+              <button onClick={() => handleTaskCreation()}>Guardar</button>
             </tr>
           )}
           {tasks.map(
@@ -196,8 +261,8 @@ const BoardList = () => {
         </tbody>
       </table>
 
-      <TodoForm setTasks={setTasks} />
-      <TodoList tasks={tasks} setTasks={setTasks} />
+      {/* <TodoForm setTasks={setTasks} />
+      <TodoList tasks={tasks} setTasks={setTasks} /> */}
     </ThemeProvider>
   );
 };

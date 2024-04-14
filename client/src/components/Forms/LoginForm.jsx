@@ -1,72 +1,83 @@
-"use client"
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { useRouter } from 'next/navigation';
-import { ThemeProvider } from '@emotion/react';
-import { theme } from '@/theme';
-import Link from 'next/link';
-import { login } from '@/app/api/route';
+"use client";
+import * as React from "react";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { useRouter } from "next/navigation";
+import { ThemeProvider } from "@emotion/react";
+import { theme } from "@/theme";
+import Link from "next/link";
+import { login } from "@/app/api/route";
 
-const Copyright=(props) =>{
-    return (
-      <Typography variant="body2" color="text.secondary" align="center" {...props}>
-        {'Copyright © '}
-        <Link color="inherit" href="https://mui.com/">
-          Your Website
-        </Link>{' '}
-        {new Date().getFullYear()}
-        {'.'}
-      </Typography>
-    );
-  }
+const Copyright = (props) => {
+  return (
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright © "}
+      <Link color="inherit" href="https://mui.com/">
+        Your Website
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+};
 
 const LoginForm = () => {
-
-    const router = useRouter();
-    const handleSubmit = async (event) =>{
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const data = 
-          {
-            email: formData.get('email'),
-            password: formData.get('password'),
-          }         
-        ;
-        try {
-          const result = await login(data);
-        } catch (error) {
-          console.log(error);
-        }
+  const router = useRouter();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const data = {
+      email: formData.get("email"),
+      password: formData.get("password"),
+    };
+    try {
+      const result = await login(data);
+      if (result.user) {
+        localStorage.setItem("user", JSON.stringify(result.user));
+      }
+      console.log(result);
+    } catch (error) {
+      console.log(error);
     }
-    return (
-        <ThemeProvider theme={theme}>
+  };
+  return (
+    <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
           sx={{
             marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'contained' }}>
+          <Avatar sx={{ m: 1, bgcolor: "contained" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
             <TextField
               margin="normal"
               required
@@ -117,7 +128,7 @@ const LoginForm = () => {
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
-      </ThemeProvider>
-    );
-} 
-export default LoginForm; 
+    </ThemeProvider>
+  );
+};
+export default LoginForm;
