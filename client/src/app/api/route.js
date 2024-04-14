@@ -63,3 +63,56 @@ export function passwordReset(data) {
         }
     });
 }
+
+//TASK
+export function createTask(data) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_API_DOMAIN}/task`,data);
+            const result = await response.data;
+            resolve(result);
+        } catch (error) {
+            console.log(error);
+            reject(error);
+        }
+    });
+}
+
+export function findAllTasks() {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_API_DOMAIN}/tasks`);
+            const result = await response.data;
+            resolve(result);
+        } catch (error) {
+            console.log(error);
+            reject(error)
+        }
+    })
+}
+export function findTask(id) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_API_DOMAIN}/task/${id}`);
+            const result = await response.data;
+            resolve(result);
+        } catch (error) {
+            console.log(error);
+            reject(error);
+        }
+    });
+}
+
+//Actualiza el status 
+export function updateStatus(id, newStatus) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await axios.put(`${process.env.REACT_APP_API_DOMAIN}/tasks/update-status/${id}`, newStatus);
+            const result = await response.data;
+            resolve(result);
+        } catch (error) {
+            console.log(error);
+            reject(error);
+        }
+    });
+}

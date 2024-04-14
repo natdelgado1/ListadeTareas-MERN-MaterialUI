@@ -25,6 +25,6 @@ app.use("/api/session", sessionRoutes);
 const userRoutes = require('./routes/user.routes');
 app.use("/api/user", userRoutes);
 const taskRoutes = require('./routes/task.routes');
-app.use("/api/task", taskRoutes);
+app.use("/api/tasks", taskRoutes);
 
 app.listen(port, () => console.log(`Listening on port: ${port}`));

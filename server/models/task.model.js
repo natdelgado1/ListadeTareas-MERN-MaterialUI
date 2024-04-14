@@ -15,10 +15,10 @@ const TaskSchema = new mongoose.Schema(
             enum: ['low', 'mid', 'high'],
             default: 'low',
         },
-        state: {
+        status: {
             type: String,
             required: [true, "State is required"],
-            enum: ['pending', 'complete'],
+            enum: ['pending', 'completed'],
             default: 'pending'
         },
         taskDate: {

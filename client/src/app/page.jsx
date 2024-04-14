@@ -2,17 +2,14 @@
 import TodoForm from "@/components/TodoForm/TodoForm";
 import TodoList from "@/components/TodoList/TodoList";
 import { useEffect, useState } from "react";
-import { theme } from '@/theme';
 import { Box, Divider, Drawer, List, ListItem, ListItemButton, ListItemText, ThemeProvider, Toolbar, ListItemIcon, CssBaseline } from '@mui/material';
 import { useRouter } from "next/navigation";
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-import Sidebar from "@/components/navs/Sidebar";
 const drawerWidth = 240;
 
 export default function Home() {
   //const router = useRouter();
-  const [tasks, setTasks] = useState([]);
   // const [user, setUser] = useState();
   // useEffect(()=>{
   //   if(user === undefined){
@@ -22,11 +19,7 @@ export default function Home() {
   
   return (
     <main>
-      <ThemeProvider theme={theme}>
-        <Sidebar/>
-        <TodoForm setTasks={setTasks} />
-        <TodoList tasks={tasks} setTasks={setTasks} />
-      </ThemeProvider>
+     
     </main>
   );
 }
