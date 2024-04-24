@@ -1,6 +1,4 @@
 "use client";
-import TodoForm from "../TodoForm/TodoForm";
-import TodoList from "../TodoList/TodoList";
 import { ThemeProvider } from "@emotion/react";
 import { theme } from "@/theme";
 import { useEffect, useState } from "react";
@@ -21,6 +19,7 @@ import {
   ListSharp,
   PlusOneOutlined,
   PriorityHighOutlined,
+  SaveAlt,
   ScheduleOutlined,
 } from "@mui/icons-material";
 import { createTask, findAllTasks, updateStatus } from "@/app/api/route";
@@ -50,7 +49,7 @@ const BoardList = ({ addNewTask }) => {
   };
 
   const handleTaskCreation = async () => {
-    const user = localStorage.getItem("user");
+    const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
       const data = {
         title: taskTitle,
@@ -77,7 +76,6 @@ const BoardList = ({ addNewTask }) => {
   };
 
   const handleChangeStatus = (task) => {
-    console.log(task);
     let newStatus = "completed";
     if (task.status === "completed") {
       newStatus = "pending";
@@ -196,7 +194,11 @@ const BoardList = ({ addNewTask }) => {
                 />
                 {/* <input className="px-2 py-2 w-full" type="time"/> */}
               </td>
-              <button onClick={() => handleTaskCreation()}>Guardar</button>
+              <td>
+                <button onClick={() => handleTaskCreation()}>
+                  <SaveAlt />
+                </button>
+              </td>
             </tr>
           )}
           {tasks.map(
@@ -260,9 +262,6 @@ const BoardList = ({ addNewTask }) => {
           )}
         </tbody>
       </table>
-
-      {/* <TodoForm setTasks={setTasks} />
-      <TodoList tasks={tasks} setTasks={setTasks} /> */}
     </ThemeProvider>
   );
 };

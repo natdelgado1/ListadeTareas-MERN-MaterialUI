@@ -49,7 +49,7 @@ const LoginForm = () => {
       if (result.user) {
         localStorage.setItem("user", JSON.stringify(result.user));
       }
-      console.log(result);
+      router.push("/");
     } catch (error) {
       console.log(error);
     }

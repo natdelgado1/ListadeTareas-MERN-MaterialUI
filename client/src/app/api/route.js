@@ -68,7 +68,7 @@ export function passwordReset(data) {
 export function createTask(data) {
     return new Promise(async (resolve, reject) => {
         try {
-            const response = await axios.post(`${process.env.REACT_APP_API_DOMAIN}/task`,data);
+            const response = await axios.post(`${process.env.REACT_APP_API_DOMAIN}/tasks`,data);
             const result = await response.data;
             resolve(result);
         } catch (error) {
