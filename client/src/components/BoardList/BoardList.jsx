@@ -23,19 +23,21 @@ import {
   ScheduleOutlined,
 } from "@mui/icons-material";
 import { createTask, findAllTasks, updateStatus } from "@/app/api/route";
+import moment from "moment/moment";
 
 const BoardList = ({ addNewTask }) => {
-  const date = new Date();
+  const date = moment();
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState(addNewTask || false);
-  const [taskDate, setTaskDate] = useState(date.toISOString().substring(0, 10));
+  const [taskDate, setTaskDate] = useState(
+    `${date.year()}-${date.month() < 10 ? "0"+date.month(): date.month()}-${date.date()}`
+  );
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [taskPriority, setTaskPriority] = useState("low");
   const [taskStatus, setTaskStatus] = useState("pending");
-  date.setDate(date.getDate() + 1);
   const [taskDeadline, setTaskdeadline] = useState(
-    date.toISOString().substring(0, 10)
+   `${date.year()}-${date.month() < 10 ? "0"+date.month(): date.month()}-${date.date() + 1}`
   );
 
   const fetchAllTasks = () => {
@@ -92,6 +94,8 @@ const BoardList = ({ addNewTask }) => {
   useEffect(() => {
     fetchAllTasks();
   }, []);
+
+  useEffect(() => {}, [newTask]);
   return (
     <ThemeProvider theme={theme}>
       <Fab

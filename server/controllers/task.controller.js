@@ -48,7 +48,7 @@ module.exports.updateTask = async (req, res) => {
 //Completar una tarea
 module.exports.updateStatus = async (req, res) => {
     try {
-        const updatedTask = await Task.findOneAndUpdate({ _id: req.params.id}, {status: req.body.status}, {new: true} );
+        const updatedTask = await Task.findOneAndUpdate({ _id: req.params.id }, { status: req.body.status }, { new: true });
         res.status(200);
         res.json(updatedTask);
     } catch (error) {
@@ -67,3 +67,21 @@ module.exports.deleteTask = async (req, res) => {
         res.json({ error: error });
     }
 };
+
+module.exports.getFilteredTasks = async (req, res) => {
+    const dateFrom = new Date()
+    dateFrom.setHours(0,0,0);
+    const dateTo = new Date();
+    dateTo.setHours(23,59,59);
+
+    console.log(dateFrom);
+    console.log(dateTo);
+    try {
+        const tasks = await Task.find({
+            taskDate: { $gte: dateFrom, $lte: dateTo } 
+        });
+        res.status(200).json(tasks);
+    } catch (error) {
+        console.log(error);
+    }
+}

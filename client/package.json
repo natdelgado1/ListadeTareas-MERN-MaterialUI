@@ -17,6 +17,7 @@
     "@mui/x-data-grid": "^7.1.1",
     "axios": "^1.6.8",
     "formdata-polyfill": "^4.0.10",
+    "moment": "^2.30.1",
     "mui-one-time-password-input": "^2.0.2",
     "next": "14.1.4",
     "react": "^18",

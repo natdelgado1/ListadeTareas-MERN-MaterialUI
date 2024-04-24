@@ -9,7 +9,6 @@ const Tablepage = () =>{
   const [addNewTask, setAddNewTask] = useState(new Boolean(searchParams.get('addNewTask') || false));
 
   useEffect(() =>{
-    console.log(addNewTask);
   },[addNewTask])
     return(
       <Fragment>
