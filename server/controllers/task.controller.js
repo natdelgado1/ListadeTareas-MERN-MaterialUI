@@ -1,3 +1,4 @@
+const moment = require("moment/moment");
 const Task = require("../models/task.model");
 
 module.exports.createTask = async (req, res) => {
@@ -69,16 +70,15 @@ module.exports.deleteTask = async (req, res) => {
 };
 
 module.exports.getFilteredTasks = async (req, res) => {
-    const dateFrom = new Date()
-    dateFrom.setHours(0,0,0);
-    const dateTo = new Date();
-    dateTo.setHours(23,59,59);
-
-    console.log(dateFrom);
-    console.log(dateTo);
+   const dateFrom = moment();
+   dateFrom.set({h: 0, m: 0, s:0});
+   const dateTo = moment();
+   dateTo.set({h: 23, m: 59, s:59})
+   console.log(dateFrom);
+   console.log(dateTo);
     try {
         const tasks = await Task.find({
-            taskDate: { $gte: dateFrom, $lte: dateTo } 
+            taskDate: { $gte: dateFrom.toDate(), $lte: dateTo.toDate() } 
         });
         res.status(200).json(tasks);
     } catch (error) {
