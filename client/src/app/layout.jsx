@@ -20,9 +20,7 @@ export default function RootLayout({ children }) {
         <div style={{flex:1, marginTop: "70px"}}>
         {children}         
         </div>
-        </div>
-        
-
+        </div>        
       </body>
     </html>
   );
