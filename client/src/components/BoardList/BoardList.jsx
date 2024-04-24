@@ -21,6 +21,13 @@ import {
   PriorityHighOutlined,
   SaveAlt,
   ScheduleOutlined,
+  Settings,
+  SaveAltOutlined,
+  SaveOutlined,
+  Edit,
+  EditOutlined,
+  DeleteOutline,
+  Visibility
 } from "@mui/icons-material";
 import { createTask, findAllTasks, updateStatus } from "@/app/api/route";
 import moment from "moment/moment";
@@ -30,14 +37,14 @@ const BoardList = ({ addNewTask }) => {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState(addNewTask || false);
   const [taskDate, setTaskDate] = useState(
-    `${date.year()}-${date.month() < 10 ? "0"+date.month(): date.month()}-${date.date()}`
+    date.format('YYYY-MM-DD')
   );
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [taskPriority, setTaskPriority] = useState("low");
   const [taskStatus, setTaskStatus] = useState("pending");
   const [taskDeadline, setTaskdeadline] = useState(
-   `${date.year()}-${date.month() < 10 ? "0"+date.month(): date.month()}-${date.date() + 1}`
+   `${date.year()}-${date.month() < 10 ? "0"+(date.month()+1): (date.month()+1)}-${date.date() + 1}`
   );
 
   const fetchAllTasks = () => {
@@ -52,19 +59,29 @@ const BoardList = ({ addNewTask }) => {
 
   const handleTaskCreation = async () => {
     const user = JSON.parse(localStorage.getItem("user"));
+    console.log(taskDate.split("-")[1]);
     if (user) {
       const data = {
         title: taskTitle,
         description: taskDescription,
         priority: taskPriority,
         status: taskStatus,
-        taskDate: taskDate,
-        deadline: taskDeadline,
+        taskDate: moment().set({dates: taskDate.split("-")[2],months: parseInt(taskDate.split("-")[1])-1,y: taskDate.split("-")[0]}),
+        deadline: moment().set({dates: taskDeadline.split("-")[2],months: parseInt(taskDeadline.split("-")[1])-1,y: taskDeadline.split("-")[0]}),
         userId: user._id,
       };
       try {
         const result = await createTask(data);
+        const temTasks = [result, ...tasks ];
+        setTasks(temTasks);
         console.log(result);
+        setTaskTitle("");
+        setTaskDescription("");
+        setTaskPriority("low");
+        setTaskStatus("pending");
+        setTaskdeadline(`${date.year()}-${date.month() < 10 ? "0"+(date.month()+1): (date.month()+1)}-${date.date() + 1}`);
+        setTaskDate(date.format('YYYY-MM-DD'))
+        setNewTask(false);
       } catch (error) {
         console.log(error);
       }
@@ -89,6 +106,7 @@ const BoardList = ({ addNewTask }) => {
       });
       setTasks([...newList, updatedTask]);
     });
+    
   };
 
   useEffect(() => {
@@ -131,6 +149,9 @@ const BoardList = ({ addNewTask }) => {
             </th>
             <th className="border border-gray-200 px-2 py-2 font-normal">
               {<ScheduleOutlined className="w-5" />}Deadline
+            </th>
+            <th className="border text-center border-gray-200 px-2 py-2 font-normal">
+              {<Settings className="w-5" />}
             </th>
           </tr>
         </thead>
@@ -198,9 +219,9 @@ const BoardList = ({ addNewTask }) => {
                 />
                 {/* <input className="px-2 py-2 w-full" type="time"/> */}
               </td>
-              <td>
+              <td className="text-center text-blue-600">
                 <button onClick={() => handleTaskCreation()}>
-                  <SaveAlt />
+                  <SaveOutlined />
                 </button>
               </td>
             </tr>
@@ -209,7 +230,7 @@ const BoardList = ({ addNewTask }) => {
             (task, index) =>
               task.status === "pending" && (
                 <tr key={index}>
-                  <td className="border flex gap-3 border-gray-200 px-4 py-2">
+                  <td className="border  border-gray-200 px-4 py-2">
                     <button onClick={() => handleChangeStatus(task)}>
                       <CheckBoxOutlineBlankOutlined />
                     </button>
@@ -226,10 +247,24 @@ const BoardList = ({ addNewTask }) => {
                     <Brightness1 className="text-yellow-500" />
                   </td>
                   <td className="border border-gray-200 px-4 py-2">
-                    {task.taskDate}
+                    {moment(task.taskDate).format("DD-MM-YYYY")}
                   </td>
                   <td className="border border-gray-200 px-4 py-2">
-                    {task.deadline}
+                    {moment(task.deadline).format('DD-MM-YYYY')}
+                  </td>
+                  
+                  <td className="text-center">
+                    <div className="flex gap-2 items-center justify-center">
+                      <button title="Ver tarea" className="hover:text-blue-500" >
+                        <Visibility className="w-5 h-5"/>
+                      </button>
+                      <button  className="hover:text-blue-500">
+                        <EditOutlined className="w-5 h-5"/>
+                      </button>
+                      <button  className="hover:text-blue-500">
+                        <DeleteOutline className="w-5 h-5"/>
+                      </button>
+                    </div>
                   </td>
                 </tr>
               )
@@ -260,6 +295,13 @@ const BoardList = ({ addNewTask }) => {
                   </td>
                   <td className="border border-gray-200 px-4 py-2">
                     {task.deadline}
+                  </td>
+                  <td className="text-center">
+                    <div className="flex gap-2">
+                      <button className="w-4 h-4">
+                        <EditOutlined/>
+                      </button>
+                    </div>
                   </td>
                 </tr>
               )
