@@ -20,7 +20,7 @@ const TopNav = () =>  {
 
   return (
     <ThemeProvider theme={theme}>
-      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+      <AppBar className='sm:hidden' position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
           <IconButton
             size="large"
