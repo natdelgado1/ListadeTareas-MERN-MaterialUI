@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
         <TopNav/>
         <div style={{display:"flex" }}>
         <Sidebar/>
-        <div style={{flex:1, marginTop: "70px"}}>
+        <div style={{flex:1, marginTop: "20px"}}>
         {children}         
         </div>
         </div>        
