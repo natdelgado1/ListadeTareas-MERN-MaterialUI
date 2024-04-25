@@ -74,8 +74,6 @@ module.exports.getFilteredTasks = async (req, res) => {
    dateFrom.set({h: 0, m: 0, s:0});
    const dateTo = moment();
    dateTo.set({h: 23, m: 59, s:59})
-   console.log(dateFrom);
-   console.log(dateTo);
     try {
         const tasks = await Task.find({
             taskDate: { $gte: dateFrom.toDate(), $lte: dateTo.toDate() } 
