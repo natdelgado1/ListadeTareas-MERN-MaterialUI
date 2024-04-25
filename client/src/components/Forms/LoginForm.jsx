@@ -41,6 +41,7 @@ const LoginForm = () => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const data = {
+      name: formData.get("name"),
       email: formData.get("email"),
       password: formData.get("password"),
     };
@@ -78,6 +79,17 @@ const LoginForm = () => {
             noValidate
             sx={{ mt: 1 }}
           >
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="name"
+              label="Name"
+              defaultValue={"Natalia Delgado"}
+              name="name"
+              autoComplete="name"
+              autoFocus
+            />
             <TextField
               margin="normal"
               required
