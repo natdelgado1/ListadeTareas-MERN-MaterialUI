@@ -30,7 +30,7 @@ const Sidebar = () => {
 
         }}
         >
-          <Toolbar />
+          <Toolbar className='sm:hidden' />
           <Box sx={{ overflow: 'auto' }}>
             <List>
               {['Today', 'Week', 'Month'].map((text, index) => (
