@@ -1,3 +1,4 @@
+"use client"
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -18,12 +19,18 @@ import {
   DateRangeOutlined,
   TodayOutlined,
 } from "@mui/icons-material";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const drawerWidth = 280;
 
 const Sidebar = () => {
-  return (
-    
+  const [user, setUser] = useState(undefined);
+  useEffect(() => {
+    const userLocalStorage = JSON.parse(localStorage.getItem("user"));
+    setUser(userLocalStorage);
+  }, []);
+  return (   
     <Drawer
       variant="permanent"
       sx={{
@@ -35,11 +42,11 @@ const Sidebar = () => {
       <Toolbar className="sm:hidden" />
       <div className="flex gap-2 p-2 ">
         <div className="w-max justify-center">
-          <div  className=" fondo-gris h-14 w-14 rounded-full flex justify-center items-center text-white text-2xl font-semibold">N</div>
+          <div  className=" fondo-gris h-14 w-14 rounded-full flex justify-center items-center text-white text-2xl font-semibold">{user?.name[0].toUpperCase()}</div>
         </div>
         <div className="flex-1 flex-col flex items-start overflow-hidden justify-center">
-          <span className="font-semibold">Natalia Delgado</span>
-          <span className=" text-sm">natdelgadodev@gmail.com</span>
+          <span className="font-semibold">{user?.name}</span>
+          <span className=" text-sm">{user?.email}</span>
         </div>
       </div>
       <Divider />
