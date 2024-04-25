@@ -35,6 +35,7 @@ const RegisterForm = () => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const data ={
+      name: formData.get('name'),
       email: formData.get('email'),
       password: formData.get('password'),
       confirmPassword: formData.get('confirmPassword'),
@@ -67,6 +68,16 @@ const RegisterForm = () => {
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
+            <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="name"
+                  label="Name"
+                  name="name"
+                  autoComplete="name"
+                />
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
