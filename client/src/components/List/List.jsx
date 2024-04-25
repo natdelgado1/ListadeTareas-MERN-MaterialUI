@@ -18,6 +18,7 @@ import {
 const ListForm = () => {
   const [value, setValue] = useState("Hoy");
   const [tasks, setTasks] = useState([]);
+  
   // const [taskDate, setTaskDate] = useState(date.format("YYYY-MM-DD"));
   // const [taskTitle, setTaskTitle] = useState("");
   // const [taskDescription, setTaskDescription] = useState("");
@@ -81,17 +82,6 @@ const ListForm = () => {
           <hr className="mt-4" />
         </div>
       ))}
-      {/* {tasks.map((task, index) => (
-        <div>
-          <h1>{task.title}</h1>
-          <h1>{task.description}</h1>
-          <h1>{task.priority}</h1>
-          <h1>{task.status.toUpperCase()}</h1>
-          <h1>{task.taskDate}</h1>
-          <h1>{task.deadline}</h1>
-          <hr />
-        </div>
-      ))} */}
     </Fragment>
   );
 };
