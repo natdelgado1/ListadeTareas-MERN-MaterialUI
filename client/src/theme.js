@@ -12,3 +12,11 @@ export const theme = createTheme({
       },
     },
   });
+
+  export const fondoLila = createTheme({
+    palette: {
+      background: {
+        paper: '#f4e8f3', // your color
+      },
+    },
+  });

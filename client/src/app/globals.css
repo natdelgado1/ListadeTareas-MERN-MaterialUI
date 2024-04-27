@@ -21,7 +21,16 @@
 .color-rojo{
     color: #F44336 ;
 }
+.fondo-rojo{
+    background-color: #F44336 ;
+}
 
 .color-lila{
     color: #9C27B0;
+}
+.fondo-lila{
+    background-color: #9C27B0;
+}
+.styleButtonTask-lila{
+    border-color: #9C27B0;
 }

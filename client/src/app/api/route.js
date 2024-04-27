@@ -90,6 +90,19 @@ export function findAllTasks() {
         }
     })
 }
+
+export function findfilterTask(filters) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_API_DOMAIN}/tasks/filter/${filters.date}`);
+            const result = await response.data;
+            resolve(result);
+        } catch (error) {
+            console.log(error);
+            reject(error)
+        }
+    })
+}
 export function findTask(id) {
     return new Promise(async (resolve, reject) => {
         try {

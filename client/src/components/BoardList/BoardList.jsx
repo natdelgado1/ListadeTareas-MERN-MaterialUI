@@ -1,7 +1,7 @@
 "use client";
 import { ThemeProvider } from "@emotion/react";
 import { theme } from "@/theme";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Fab from "@mui/material/Fab";
 import { blue } from "@mui/material/colors";
 import {
@@ -27,28 +27,35 @@ import {
   Edit,
   EditOutlined,
   DeleteOutline,
-  Visibility
+  Visibility,
 } from "@mui/icons-material";
-import { createTask, findAllTasks, updateStatus } from "@/app/api/route";
+import {
+  createTask,
+  findAllTasks,
+  findfilterTask,
+  updateStatus,
+} from "@/app/api/route";
 import moment from "moment/moment";
+import { FilterContext } from "@/context/FilterContext";
 
 const BoardList = ({ addNewTask }) => {
   const date = moment();
+  const { updateFilters, filters } = useContext(FilterContext);
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState(addNewTask || false);
-  const [taskDate, setTaskDate] = useState(
-    date.format('YYYY-MM-DD')
-  );
+  const [taskDate, setTaskDate] = useState(date.format("YYYY-MM-DD"));
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [taskPriority, setTaskPriority] = useState("low");
   const [taskStatus, setTaskStatus] = useState("pending");
   const [taskDeadline, setTaskdeadline] = useState(
-   `${date.year()}-${date.month() < 10 ? "0"+(date.month()+1): (date.month()+1)}-${date.date() + 1}`
+    `${date.year()}-${
+      date.month() < 10 ? "0" + (date.month() + 1) : date.month() + 1
+    }-${date.date() + 1}`
   );
 
   const fetchAllTasks = () => {
-    findAllTasks()
+    findfilterTask(filters)
       .then((allTasks) => {
         setTasks(allTasks);
       })
@@ -66,21 +73,33 @@ const BoardList = ({ addNewTask }) => {
         description: taskDescription,
         priority: taskPriority,
         status: taskStatus,
-        taskDate: moment().set({dates: taskDate.split("-")[2],months: parseInt(taskDate.split("-")[1])-1,y: taskDate.split("-")[0]}),
-        deadline: moment().set({dates: taskDeadline.split("-")[2],months: parseInt(taskDeadline.split("-")[1])-1,y: taskDeadline.split("-")[0]}),
+        taskDate: moment().set({
+          dates: taskDate.split("-")[2],
+          months: parseInt(taskDate.split("-")[1]) - 1,
+          y: taskDate.split("-")[0],
+        }),
+        deadline: moment().set({
+          dates: taskDeadline.split("-")[2],
+          months: parseInt(taskDeadline.split("-")[1]) - 1,
+          y: taskDeadline.split("-")[0],
+        }),
         userId: user._id,
       };
       try {
         const result = await createTask(data);
-        const temTasks = [result, ...tasks ];
+        const temTasks = [result, ...tasks];
         setTasks(temTasks);
         console.log(result);
         setTaskTitle("");
         setTaskDescription("");
         setTaskPriority("low");
         setTaskStatus("pending");
-        setTaskdeadline(`${date.year()}-${date.month() < 10 ? "0"+(date.month()+1): (date.month()+1)}-${date.date() + 1}`);
-        setTaskDate(date.format('YYYY-MM-DD'))
+        setTaskdeadline(
+          `${date.year()}-${
+            date.month() < 10 ? "0" + (date.month() + 1) : date.month() + 1
+          }-${date.date() + 1}`
+        );
+        setTaskDate(date.format("YYYY-MM-DD"));
         setNewTask(false);
       } catch (error) {
         console.log(error);
@@ -106,12 +125,11 @@ const BoardList = ({ addNewTask }) => {
       });
       setTasks([...newList, updatedTask]);
     });
-    
   };
 
   useEffect(() => {
     fetchAllTasks();
-  }, []);
+  }, [filters]);
 
   useEffect(() => {}, [newTask]);
   return (
@@ -226,85 +244,93 @@ const BoardList = ({ addNewTask }) => {
               </td>
             </tr>
           )}
-          {tasks.map(
-            (task, index) =>
-              task.status === "pending" && (
-                <tr key={index}>
-                  <td className="border  border-gray-200 px-4 py-2">
-                    <button onClick={() => handleChangeStatus(task)}>
-                      <CheckBoxOutlineBlankOutlined />
-                    </button>
-                    <span>{task.title}</span>
-                  </td>
-                  <td className="border border-gray-200 px-4 py-2">
-                    {task.description}
-                  </td>
-                  <td className="border border-gray-200 px-4 py-2">
-                    {task.priority}
-                  </td>
-                  <td className="border border-gray-200 px-4 py-2 flex justify-between">
-                    {task.status.toUpperCase()}
-                    <Brightness1 className="text-yellow-500" />
-                  </td>
-                  <td className="border border-gray-200 px-4 py-2">
-                    {moment(task.taskDate).format("DD-MM-YYYY")}
-                  </td>
-                  <td className="border border-gray-200 px-4 py-2">
-                    {moment(task.deadline).format('DD-MM-YYYY')}
-                  </td>
-                  
-                  <td className="text-center">
-                    <div className="flex gap-2 items-center justify-center">
-                      <button title="Ver tarea" className="hover:text-blue-500" >
-                        <Visibility className="w-5 h-5"/>
+          {tasks.map((group, index) =>
+            group.tasks.map(
+              (task, index) =>
+                task.status === "pending" && (
+                  <tr key={index}>
+                    <td className="border  border-gray-200 px-4 py-2">
+                      <button onClick={() => handleChangeStatus(task)}>
+                        <CheckBoxOutlineBlankOutlined />
                       </button>
-                      <button  className="hover:text-blue-500">
-                        <EditOutlined className="w-5 h-5"/>
-                      </button>
-                      <button  className="hover:text-blue-500">
-                        <DeleteOutline className="w-5 h-5"/>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              )
-          )}
-          {tasks.map(
-            (task, index) =>
-              task.status === "completed" && (
-                <tr key={index}>
-                  <td className="border flex gap-3 border-gray-200 px-4 py-2">
-                    <button onClick={() => handleChangeStatus(task)}>
-                      <CheckBox />
-                    </button>
+                      <span>{task.title}</span>
+                    </td>
+                    <td className="border border-gray-200 px-4 py-2">
+                      {task.description}
+                    </td>
+                    <td className="border border-gray-200 px-4 py-2">
+                      {task.priority}
+                    </td>
+                    <td className="border border-gray-200 px-4 py-2 flex justify-between">
+                      {task.status.toUpperCase()}
+                      <Brightness1 className="text-yellow-500" />
+                    </td>
+                    <td className="border border-gray-200 px-4 py-2">
+                      {moment(task.taskDate).format("DD-MM-YYYY")}
+                    </td>
+                    <td className="border border-gray-200 px-4 py-2">
+                      {moment(task.deadline).format("DD-MM-YYYY")}
+                    </td>
 
-                    <span>{task.title}</span>
-                  </td>
-                  <td className="border border-gray-200 px-4 py-2">
-                    {task.description}
-                  </td>
-                  <td className="border border-gray-200 px-4 py-2">
-                    {task.priority}
-                  </td>
-                  <td className="border border-gray-200 px-4 py-2 flex justify-between">
-                    {task.status.toUpperCase()}
-                    <Brightness1 className="text-green-600" />
-                  </td>
-                  <td className="border border-gray-200 px-4 py-2">
-                    {task.taskDate}
-                  </td>
-                  <td className="border border-gray-200 px-4 py-2">
-                    {task.deadline}
-                  </td>
-                  <td className="text-center">
-                    <div className="flex gap-2">
-                      <button className="w-4 h-4">
-                        <EditOutlined/>
+                    <td className="text-center">
+                      <div className="flex gap-2 items-center justify-center">
+                        <button
+                          title="Ver tarea"
+                          className="hover:text-blue-500"
+                        >
+                          <Visibility className="w-5 h-5" />
+                        </button>
+                        <button className="hover:text-blue-500">
+                          <EditOutlined className="w-5 h-5" />
+                        </button>
+                        <button className="hover:text-blue-500">
+                          <DeleteOutline className="w-5 h-5" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                )
+            )
+          )}
+
+          {tasks.map((group, index) =>
+            group.tasks.map(
+              (task, index) =>
+                task.status === "completed" && (
+                  <tr key={index}>
+                    <td className="border flex gap-3 border-gray-200 px-4 py-2">
+                      <button onClick={() => handleChangeStatus(task)}>
+                        <CheckBox />
                       </button>
-                    </div>
-                  </td>
-                </tr>
-              )
+
+                      <span>{task.title}</span>
+                    </td>
+                    <td className="border border-gray-200 px-4 py-2">
+                      {task.description}
+                    </td>
+                    <td className="border border-gray-200 px-4 py-2">
+                      {task.priority}
+                    </td>
+                    <td className="border border-gray-200 px-4 py-2 flex justify-between">
+                      {task.status.toUpperCase()}
+                      <Brightness1 className="text-green-600" />
+                    </td>
+                    <td className="border border-gray-200 px-4 py-2">
+                      {task.taskDate}
+                    </td>
+                    <td className="border border-gray-200 px-4 py-2">
+                    {moment(task.deadline).format("DD-MM-YYYY")}
+                    </td>
+                    <td className="text-center">
+                      <div className="flex gap-2">
+                        <button className="w-4 h-4">
+                          <EditOutlined />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                )
+            )
           )}
         </tbody>
       </table>
