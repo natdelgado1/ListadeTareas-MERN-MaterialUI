@@ -33,6 +33,15 @@ const Sidebar = () => {
   const { updateFilters, filters } = useContext(FilterContext);
   const [user, setUser] = useState(undefined);
   const [showNewTask, setShowNewTask] = useState(false);
+  const [hovered, setHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setHovered(false);
+  };
 
   const newTask = () => {
     setShowNewTask(true);
@@ -63,6 +72,7 @@ const Sidebar = () => {
           [`& .MuiDrawer-paper`]: {
             width: drawerWidth,
             boxSizing: "border-box",
+            padding: fondoLila.spacing(1),
           },
         }}
       >
@@ -78,7 +88,7 @@ const Sidebar = () => {
             <span className=" text-sm">{user?.email}</span>
           </div>
         </div>
-        <div >
+        <div>
           <NewTaskButton onClick={newTask} />
           <div className="w-max h-max relative overflow-visible z-50  ">
             {showNewTask && (
@@ -94,10 +104,16 @@ const Sidebar = () => {
             {filterButtons.map((button, index) => (
               <ListItem
                 key={index}
+                style={{
+                  backgroundColor: hovered ? "fondo-lila" : "transpatent",
+                  transition: "background-color 0.3s ease",
+                }}
                 disablePadding
                 onClick={(e) =>
                   updateFilters({ ...filters, date: button.value })
                 }
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
               >
                 <ListItemButton>
                   <ListItemIcon>{button.icon}</ListItemIcon>
