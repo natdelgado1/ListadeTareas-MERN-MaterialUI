@@ -69,7 +69,7 @@ const NewTaskAlert = ({showNewTask, cancelNewTask}) => {
   return (
     
 
-        <div className=" rounded-lg px-4 py-3 text-sm bg-white  tracking-wider  w-[250px] absolute top-30 left-4 z-50 h-60 shadow-lg">
+        <div className=" rounded-lg px-4 py-3 text-sm bg-white  tracking-wider  w-[250px] absolute top-30 left-4 z-50 h-64 shadow-lg">
           <div>
             <input
               type="text"
@@ -116,7 +116,7 @@ const NewTaskAlert = ({showNewTask, cancelNewTask}) => {
                 />
               </div>
             </div>
-            <div className="online-none mt-2">
+            <div className="online-none m-3 focus: border-black">
               <select
                 type="text"
                 onChange={(e) => setTaskPriority(e.target.value)}
