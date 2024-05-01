@@ -38,7 +38,7 @@ module.exports.findAllTasks = async (req, res) => {
 //Actualiza una Tarea
 module.exports.updateTask = async (req, res) => {
     try {
-        const updatedTask = await Task.findOneAndUpdate({ _id: req.params.id }, req.body);
+        const updatedTask = await Task.findOneAndUpdate({ _id: req.params.id }, req.body, {new: true});
         res.status(200);
         res.json(updatedTask);
     } catch (error) {
