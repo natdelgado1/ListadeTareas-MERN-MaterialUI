@@ -1,10 +1,10 @@
 "use client";
-import { CalendarIcon, FlagIcon } from "@heroicons/react/24/outline";
+import { FlagIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import moment from "moment/moment";
 import { createTask } from "@/app/api/route";
 
-const NewTaskAlert = ({showNewTask, cancelNewTask}) => {
+const NewTaskAlert = ({cancelNewTask}) => {
   const date = moment();
   const [tasks, setTasks] = useState([]);
   const [titleError, setTitleError] = useState("");
@@ -13,11 +13,7 @@ const NewTaskAlert = ({showNewTask, cancelNewTask}) => {
   const [taskDescription, setTaskDescription] = useState("");
   const [taskPriority, setTaskPriority] = useState("low");
   const [taskStatus, setTaskStatus] = useState("pending");
-  const [taskDeadline, setTaskdeadline] = useState(
-    `${date.year()}-${
-      date.month() < 10 ? "0" + (date.month() + 1) : date.month() + 1
-    }-${date.date() + 1}`
-  );
+  const [taskDeadline, setTaskdeadline] = useState(`${date.year()}-${date.month() < 10 ? "0" + (date.month() + 1) : date.month() + 1}-${date.date() + 1}`);
 
   const handleTaskCreation = async () => {
     if (titleError) {
@@ -83,7 +79,7 @@ const NewTaskAlert = ({showNewTask, cancelNewTask}) => {
                 {titleError}
               </h1>
             )}
-            <input
+            <textarea
               type="text"
               className="block outline-none text-md mt-2"
               placeholder="Description"
