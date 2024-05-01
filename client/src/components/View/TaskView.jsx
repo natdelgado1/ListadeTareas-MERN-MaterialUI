@@ -1,4 +1,5 @@
 "use client";
+import { updateTask } from "@/app/api/route";
 import {
   ChatBubbleLeftRightIcon,
   PencilIcon,
@@ -7,10 +8,25 @@ import {
 import moment from "moment";
 import { useState } from "react";
 import { Fragment } from "react";
+import EditTask from "../alerts/EditTask";
 const TaskView = ({ tasks }) => {
   const today = moment();
   const [showOver, setShowOver] = useState(false);
+  const [showEditTask, setShowEditTask] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(undefined);
 
+  const editTask = () =>{
+    setShowEditTask(true);
+  }
+  const cancelEditTask = () =>{
+    setShowEditTask(false);
+  }
+  
+  const toogleEditAlert = (task) => {
+    setShowEditTask(!showEditTask);
+    setSelectedTask(task);
+    
+  };
   const hanleOverEnter = (value) => {
     setShowOver(value);
   };
@@ -19,7 +35,6 @@ const TaskView = ({ tasks }) => {
   };
   const getGroupTitle = (date) => {
     const diff = getDateDiff(date);
-  
 
     if (diff === -2) return "Anteayer";
     else if (diff === -1) return "Ayer";
@@ -33,7 +48,7 @@ const TaskView = ({ tasks }) => {
   };
 
   return (
-    <Fragment>
+    <div className="relative">
       {tasks.map((group, index) => (
         <div key={group._id}>
           <div className="relative ">
@@ -78,21 +93,24 @@ const TaskView = ({ tasks }) => {
                           : ""
                       }`}
                     ></div>
-                    <div
-                    className="relative"
-                    onMouseEnter={() => hanleOverEnter(true)}
-                    onMouseLeave={() => handleOverLeave()}
+                    <button
+                      className="relative"
+                      onMouseEnter={() => hanleOverEnter(true)}
+                      onMouseLeave={() => handleOverLeave()}
+                      onClick={() => toogleEditAlert(task)}
                     >
-                      <PencilIcon className="text-[#4D4D4D] w-5 h-5" />
-                      {
-                        showOver&& (
-                          <h3 className=" absolute bottom-6 fondo-gris h-7 w-11 text-white rounded-md text-center">Edit</h3>
-                        )
-                      }
-
-                    </div>
-                    
-                    
+                      <PencilIcon className="text-[#4D4D4D] w-5 h-5" onClick={editTask} />
+                      <div className="h-10 right-60 absolute overflow-visible z-50  "
+                     
+                      >
+                      </div>
+                      {showOver && (
+                        <h3 className=" absolute bottom-6 fondo-gris h-7
+                         w-11 text-white rounded-md text-center">
+                          Edit
+                        </h3>
+                      )}
+                    </button>
 
                     <ChatBubbleLeftRightIcon className="text-[#4D4D4D] h-5 w-5" />
                     <TrashIcon className="text-[#4D4D4D] h-5 w-5" />
@@ -103,7 +121,8 @@ const TaskView = ({ tasks }) => {
             ))}
         </div>
       ))}
-    </Fragment>
+      {showEditTask && (<div className="fixed top-44 left-96"><EditTask cancelEditTask={cancelEditTask} showEditTask={showEditTask} task= {selectedTask}/></div>)}
+    </div>
   );
 };
 
