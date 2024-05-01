@@ -78,6 +78,19 @@ export function createTask(data) {
     });
 }
 
+export function updateTask(id, newTask) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await axios.put(`${process.env.REACT_APP_API_DOMAIN}/tasks/${id}`,newTask);
+            const result = await response.data;
+            resolve(result);
+        } catch (error) {
+            console.log(error);
+            reject(error);
+        }
+    });
+}
+
 export function findAllTasks() {
     return new Promise(async (resolve, reject) => {
         try {
