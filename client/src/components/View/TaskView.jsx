@@ -9,11 +9,14 @@ import moment from "moment";
 import { useState } from "react";
 import { Fragment } from "react";
 import EditTask from "../alerts/EditTask";
+import CommentOnTask from "../alerts/CommentOnTask";
 const TaskView = ({ tasks }) => {
   const today = moment();
   const [showOver, setShowOver] = useState(false);
   const [showEditTask, setShowEditTask] = useState(false);
+  const [showComment, setShowComment] = useState(false);
   const [selectedTask, setSelectedTask] = useState(undefined);
+  const[commentPosition, setCommentPosition] = useState({x:0,y:0});
 
   const editTask = () =>{
     setShowEditTask(true);
@@ -25,6 +28,12 @@ const TaskView = ({ tasks }) => {
   const toogleEditAlert = (task) => {
     setShowEditTask(!showEditTask);
     setSelectedTask(task);
+    
+  };
+  const toggleCommentOnTask = (task) => {
+    setShowComment(!showComment);
+    let taskComponent = document.getElementById(`task_${task._id}`).getBoundingClientRect();
+    setCommentPosition({x:taskComponent.x, y:taskComponent.y});
     
   };
   const hanleOverEnter = (value) => {
@@ -63,7 +72,7 @@ const TaskView = ({ tasks }) => {
           {group.tasks
             .filter((task) => task.status === "pending")
             .map((task, index) => (
-              <div className="pt-2">
+              <div className="pt-2" id={`task_${task._id}`}>
                 <div className="flex py-1">
                   <div className="p-4 max-w-xs  bg-white rounded-xl  flex-1 relative">
                     <label className="flex items-center space-x-3">
@@ -81,7 +90,7 @@ const TaskView = ({ tasks }) => {
                       {task.description}
                     </span>
                   </div>
-                  <div className="flex items-center flex-1 justify-end gap-2">
+                  <div className="relative flex items-center flex-1 justify-end gap-2">
                     <div
                       className={`rounded-lg h-3 w-3 ${
                         task.priority === "low"
@@ -111,8 +120,9 @@ const TaskView = ({ tasks }) => {
                         </h3>
                       )}
                     </button>
-
-                    <ChatBubbleLeftRightIcon className="text-[#4D4D4D] h-5 w-5" />
+                      <button onClick={() => toggleCommentOnTask(task)}>
+                        <ChatBubbleLeftRightIcon className="text-[#4D4D4D] h-5 w-5" />
+                      </button>
                     <TrashIcon className="text-[#4D4D4D] h-5 w-5" />
                   </div>
                 </div>
@@ -122,6 +132,8 @@ const TaskView = ({ tasks }) => {
         </div>
       ))}
       {showEditTask && (<div className="fixed top-44 left-96"><EditTask cancelEditTask={cancelEditTask} setShowEditTask={setShowEditTask} task= {selectedTask}/></div>)}
+      {showComment && <CommentOnTask commentPosition={commentPosition} />
+      }
     </div>
   );
 };
