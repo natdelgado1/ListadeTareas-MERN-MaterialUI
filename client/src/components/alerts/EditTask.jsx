@@ -2,9 +2,10 @@
 import {  updateTask } from "@/app/api/route";
 import { FlagIcon } from "@heroicons/react/24/outline";
 import moment from "moment/moment";
+import { useEffect } from "react";
 import { useState } from "react";
 
-const EditTask = ({ task, cancelEditTask }) => {
+const EditTask = ({ task, cancelEditTask, setShowEditTask }) => {
   const date = moment(task?.taskDate || "");
   const [tasks, setTasks] = useState([]);
   const taskId = task?._id;
@@ -50,10 +51,13 @@ const EditTask = ({ task, cancelEditTask }) => {
       setTaskStatus(task?.status || "");
       setTaskdeadline(deadline.format("YYYY-MM-DD"));
       setTaskDate(date.format("YYYY-MM-DD"));
+      setShowEditTask(false);
     } catch (error) {
       console.log("Error al actualizar la tarea:", error);
     }}
   };
+
+ 
  
 
   return (
