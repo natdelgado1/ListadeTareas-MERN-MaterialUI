@@ -121,7 +121,7 @@ const TaskView = ({ tasks }) => {
             ))}
         </div>
       ))}
-      {showEditTask && (<div className="fixed top-44 left-96"><EditTask cancelEditTask={cancelEditTask} showEditTask={showEditTask} task= {selectedTask}/></div>)}
+      {showEditTask && (<div className="fixed top-44 left-96"><EditTask cancelEditTask={cancelEditTask} setShowEditTask={setShowEditTask} task= {selectedTask}/></div>)}
     </div>
   );
 };
