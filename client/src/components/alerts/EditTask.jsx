@@ -66,7 +66,7 @@ const EditTask = ({ task, cancelEditTask, setShowEditTask }) => {
       <form
         id="EditForm"
         onSubmit={handleSubmit}
-        className=" rounded-lg px-4 py-3 text-sm bg-white  tracking-wider  w-[250px] absolute top-30 left-96 z-50 h-fit shadow-lg border-2 border-gray-800"
+        className="rounded-lg px-4 py-3 text-sm bg-white  tracking-wider absolute top-30 left-96 z-50 h-fit shadow-lg border-2 border-gray-800"
       >
         <div>
           <input
