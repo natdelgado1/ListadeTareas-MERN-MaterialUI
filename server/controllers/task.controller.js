@@ -57,6 +57,17 @@ module.exports.updateStatus = async (req, res) => {
         res.json({ error: error });
     }
 };
+//Actualizar el comentario de una tarea
+module.exports.updateDescription = async (req, res) => {
+    try {
+        const updatedTaskDescription = await Task.findOneAndUpdate({ _id: req.params.id }, { description: req.body.description }, { new: true });
+        res.status(200);
+        res.json(updatedTaskDescription);
+    } catch (error) {
+        res.status(500);
+        res.json({ error: error });
+    }
+};
 
 module.exports.deleteTask = async (req, res) => {
     try {
