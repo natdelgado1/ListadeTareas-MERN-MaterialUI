@@ -142,3 +142,16 @@ export function updateStatus(id, newStatus) {
         }
     });
 }
+//Actualiza la descripción
+export function updateDescription(id, newDescription) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await axios.put(`${process.env.REACT_APP_API_DOMAIN}/tasks/update-description/${id}`, newDescription);
+            const result = await response.data;
+            resolve(result);
+        } catch (error) {
+            console.log(error);
+            reject(error);
+        }
+    });
+}
