@@ -63,9 +63,7 @@ const NewTaskAlert = ({cancelNewTask}) => {
 
   
   return (
-    
-
-        <div className=" rounded-lg px-4 py-3 text-sm bg-white  tracking-wider  w-[250px] absolute top-30 left-4 z-50 h-64 shadow-lg">
+        <div className=" rounded-lg px-4 py-3 text-sm bg-white  tracking-wider  w-[250px] absolute left-4 top-28 z-50 h-fit shadow-xl">
           <div>
             <input
               type="text"
@@ -80,8 +78,9 @@ const NewTaskAlert = ({cancelNewTask}) => {
               </h1>
             )}
             <textarea
+            rows={2}
               type="text"
-              className="block outline-none text-md mt-2"
+              className="w-full outline-none text-md mt-2"
               placeholder="Description"
               value={taskDescription}
               onChange={(e) => setTaskDescription(e.target.value)}
@@ -90,6 +89,7 @@ const NewTaskAlert = ({cancelNewTask}) => {
           <div>
             <div className="mt-2 ">
               <div>
+                <label htmlFor="date">Task Date</label>
                 <input
                   type="date"
                   className={`${
@@ -101,6 +101,7 @@ const NewTaskAlert = ({cancelNewTask}) => {
                 />
               </div>
               <div>
+                <label htmlFor="deadline">Deadline</label>
                 <input
                   type="date"
                   className={`${

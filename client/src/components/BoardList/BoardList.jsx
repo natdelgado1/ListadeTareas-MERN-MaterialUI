@@ -245,7 +245,7 @@ const BoardList = ({ addNewTask }) => {
             </tr>
           )}
           {tasks.map((group, index) =>
-            group.tasks.map(
+            group?.tasks.map(
               (task, index) =>
                 task.status === "pending" && (
                   <tr key={index}>

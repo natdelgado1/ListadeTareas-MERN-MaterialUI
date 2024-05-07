@@ -2,29 +2,24 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
-import AppBar from "@mui/material/AppBar";
-import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import { fondoLila } from "@/theme";
 import { ThemeProvider } from "@mui/material";
-
 import { CalendarMonthOutlined, CalendarMonthSharp } from "@mui/icons-material";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { FilterContext } from "@/context/FilterContext";
-import { CalendarDaysIcon, CalendarIcon } from "@heroicons/react/24/outline";
-import FloatingAction from "../Button/NewTaskButton";
-import NewTaskButton from "../Button/NewTaskButton";
+import {
+  CalendarDaysIcon,
+  CalendarIcon,
+  PlusCircleIcon,
+} from "@heroicons/react/24/outline";
 import NewTaskAlert from "../alerts/newTaskAlert";
 
 const drawerWidth = 280;
@@ -43,8 +38,8 @@ const Sidebar = () => {
     setHovered(false);
   };
 
-  const newTask = () => {
-    setShowNewTask(true);
+  const toggleNewTask = () => {
+    setShowNewTask(!showNewTask);
   };
 
   const cancelNewTask = () => {
@@ -88,17 +83,19 @@ const Sidebar = () => {
             <span className=" text-sm">{user?.email}</span>
           </div>
         </div>
-        <div>
-          <NewTaskButton onClick={newTask} />
-          <div className="w-max h-max relative overflow-visible z-50  ">
-            {showNewTask && (
-              <NewTaskAlert
-                cancelNewTask={cancelNewTask}
-                showNewTask={showNewTask}
-              />
-            )}
+        <button
+          onClick={() => toggleNewTask()}
+          className="flex gap-2 ps-4 py-2"
+        >
+          <PlusCircleIcon width={24} height={24} className="color-lila" />
+          <span className="color-lila font-semibold">New Task</span>
+        </button>
+        {showNewTask && (
+          <div className="fixed overflow-visible z-50  ">
+            <NewTaskAlert cancelNewTask={cancelNewTask} />
           </div>
-        </div>
+        )}
+
         <Box sx={{ overflow: "auto" }}>
           <List>
             {filterButtons.map((button, index) => (
