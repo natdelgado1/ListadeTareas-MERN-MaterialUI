@@ -10,20 +10,6 @@ import NewTaskAlert from "@/components/alerts/newTaskAlert";
 const ListTask = () => {
   return (
     <Fragment>
-      <Link
-        href={{ pathname: "/table", query: { addNewTask: true } }}
-        className="absolute right-10 bottom-10 p-0"
-        >
-        <Fab
-          sx={{
-            bgcolor: blue[500],
-          }}
-          aria-label={"Add task"}
-          color={"primary"}
-          >
-          <AddOutlined />
-        </Fab>
-      </Link>
       <ListForm />
           <NewTaskAlert/>
     </Fragment>
