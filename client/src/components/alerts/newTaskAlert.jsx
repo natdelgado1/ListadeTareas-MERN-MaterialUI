@@ -4,7 +4,7 @@ import { useState } from "react";
 import moment from "moment/moment";
 import { createTask } from "@/app/api/route";
 
-const NewTaskAlert = ({cancelNewTask}) => {
+const NewTaskAlert = ({cancelNewTask, setShowNewTask}) => {
   const date = moment();
   const [tasks, setTasks] = useState([]);
   const [titleError, setTitleError] = useState("");
@@ -16,10 +16,13 @@ const NewTaskAlert = ({cancelNewTask}) => {
   const [taskDeadline, setTaskdeadline] = useState(`${date.year()}-${date.month() < 10 ? "0" + (date.month() + 1) : date.month() + 1}-${date.date() + 1}`);
 
   const handleTaskCreation = async () => {
-    if (titleError) {
+    if (taskTitle.trim() === "") {
+      setTitleError("Title is required");
+      return; 
+    }
       const user = JSON.parse(localStorage.getItem("user"));
       console.log(taskDate.split("-")[1]);
-      if (user) {
+     if (user) {
         const data = {
           title: taskTitle,
           description: taskDescription,
@@ -51,14 +54,14 @@ const NewTaskAlert = ({cancelNewTask}) => {
             }-${date.date() + 1}`
           );
           setTaskDate(date.format("YYYY-MM-DD"));
+          setShowNewTask(false);
+
         } catch (error) {
           console.log(error);
         }
       }
-      setTitleError("");
-    } else {
-      setTitleError("Title is required");
-    }
+      setTitleError("");  
+   
   };
 
   
@@ -113,22 +116,30 @@ const NewTaskAlert = ({cancelNewTask}) => {
                 />
               </div>
             </div>
+            <div className="flex">
             <div className="online-none m-3 focus: border-black">
+              <label htmlFor="Priority">Priority</label>
               <select
                 type="text"
                 onChange={(e) => setTaskPriority(e.target.value)}
                 value={taskPriority}
               >
-                <option value="low">
-                  Low <FlagIcon />{" "}
-                </option>
-                <option value="medium">
-                  Medium <FlagIcon />{" "}
-                </option>
-                <option value="high">
-                  High <FlagIcon />{" "}
-                </option>
+                <option value="low">low</option>
+                <option value="medium">medium</option>
+                <option value="high">high</option>
               </select>
+            </div>
+            <div className="online-none m-3 focus: border-black">
+              <label htmlFor="status">Status</label>
+              <select
+                type="text"
+                onChange={(e) => setTaskStatus(e.target.value)}
+                value={taskStatus}
+              >
+                <option value="pending">pending</option>
+                <option value="completed">completed</option>
+              </select>
+            </div>
             </div>
             <div className="flex justify-end gap-2 w-full">
               <button className="fondo-gris p-2 rounded-lg texto-gris-1 shadow-lg"
