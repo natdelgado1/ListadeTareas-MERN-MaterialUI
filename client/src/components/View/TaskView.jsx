@@ -3,7 +3,6 @@ import { updateDescription, updateTask } from "@/app/api/route";
 import {
   ChatBubbleLeftRightIcon,
   PencilIcon,
-  TrashIcon,
 } from "@heroicons/react/24/outline";
 import moment from "moment";
 import { useState } from "react";
@@ -23,7 +22,7 @@ const TaskView = ({ tasks, setTasks }) => {
   };
   const cancelEditTask = () => {
     setShowEditTask(false);
-  };
+  }
 
   const toogleEditAlert = (task) => {
     setShowEditTask(!showEditTask);
@@ -52,7 +51,6 @@ const TaskView = ({ tasks, setTasks }) => {
       };
       try {
         const result = await updateDescription(selectedTask._id, data);
-
         const tempTasks = tasks.map((group) => {
           const tempGroup = group;
           tempGroup.tasks = group.tasks.map((task) => {
@@ -105,7 +103,7 @@ const TaskView = ({ tasks, setTasks }) => {
             </Fragment>
           ) : null}
           {group.tasks.filter((task) => task.status === "pending").map((task, index) => (
-              <div className="pt-2" id={`task_${task._id}`}>
+              <div key={index} className="pt-2" id={`task_${task._id}`}>
                 <div className="flex py-1">
                   <div className="p-4 max-w-xs  bg-white rounded-xl  flex-1 relative">
                     <label className="flex items-center space-x-3">
@@ -113,9 +111,9 @@ const TaskView = ({ tasks, setTasks }) => {
                         type="checkbox"
                         name="checked-demo"
                         value="1"
-                        class="form-tick appearance-none h-6 w-6 border border-gray-300 rounded-md checked:bg-[#9C27B0] checked:border-transparent focus:outline-none"
+                        className="form-tick appearance-none h-6 w-6 border border-gray-300 rounded-md checked:bg-[#9C27B0] checked:border-transparent focus:outline-none"
                       />
-                      
+
                       <span className="text-gray-900 font-medium text-xl">
                         {task.title}
                       </span>
