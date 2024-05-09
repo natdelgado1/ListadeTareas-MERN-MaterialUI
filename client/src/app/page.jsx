@@ -1,25 +1,31 @@
-"use client"
-import TodoForm from "@/components/TodoForm/TodoForm";
-import TodoList from "@/components/TodoList/TodoList";
-import { useEffect, useState } from "react";
-import { Box, Divider, Drawer, List, ListItem, ListItemButton, ListItemText, ThemeProvider, Toolbar, ListItemIcon, CssBaseline } from '@mui/material';
+"use client";
 import { useRouter } from "next/navigation";
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-const drawerWidth = 240;
+import { use, useEffect } from "react";
+import { useState } from "react";
 
-export default function Home() {
-  //const router = useRouter();
-  // const [user, setUser] = useState();
-  // useEffect(()=>{
-  //   if(user === undefined){
-  //     router.push("/login")
-  //   }
-  // },[user])
-  
+export default function Home() { 
+  const router = useRouter();
+  const[user, setUser] = useState();
+
+
+  const fetchUser = async () => {
+    return JSON.parse(localStorage.getItem("user"));
+  }
+
+useEffect(() => {
+  setUser(fetchUser());
+}, []);
+
+useEffect(()=>{
+  if(!user){
+    router.push("/login")
+  }else{
+    router.push("/list")
+  }
+  },[user])
+
   return (
-    <main>
-     
+    <main>   
     </main>
   );
 }
