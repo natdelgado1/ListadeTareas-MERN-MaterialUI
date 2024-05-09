@@ -134,3 +134,61 @@ module.exports.getFilteredTasks = async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 }
+
+module.exports.getFilteredTaskinStatusPending = async (req, res) => {
+    const userId = req.body.userId;
+    let dateFrom = moment();
+    let dateTo = moment();
+    let dateType = req.params.dateType;
+    if (dateType === "1") {
+        // No se realiza ninguna acción adicional para el tipo de fecha 1
+    } else if (dateType === "2") {
+        dateFrom.startOf('week');
+        dateTo.endOf('week');
+    } else if (dateType === "3") {
+        dateFrom.startOf('month');
+        dateTo.endOf('month');
+    } else if (dateType === "4") {
+        dateFrom.startOf('year');
+        dateTo.endOf('year');
+    }
+    dateFrom.set({ h: 0, m: 0, s: 0 });
+    dateTo.set({ h: 23, m: 59, s: 59 });
+    try {
+        const tasks = await Task.aggregate([
+            {
+                $match: {
+                    taskDate: { $gte: dateFrom.toDate(), $lte: dateTo.toDate() },
+                    status: "pending",
+                    userId: userId
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    title: 1,
+                    description: 1,
+                    priority: 1,
+                    status: 1,
+                    deadline: 1,
+                    taskDate: {
+                        $dateToString: { format: "%Y-%m-%d", date: "$taskDate" }
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: "$taskDate",
+                    tasks: { $push: "$$ROOT" }
+                }
+            },
+            {
+                $sort: { _id: -1 }
+            }
+        ])
+        res.status(200).json(tasks);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
