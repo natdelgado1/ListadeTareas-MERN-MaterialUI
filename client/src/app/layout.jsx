@@ -13,15 +13,8 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
-          
-          <TopNav />
-          <div style={{ display: "flex" }}>
-        <FilterProvider>
-            <Sidebar />
-            <div style={{ flex: 1, marginTop: "20px" }}>{children}</div>
-        </FilterProvider>
-          </div>
+      <body>         
+          {children}
       </body>
     </html>
   );
