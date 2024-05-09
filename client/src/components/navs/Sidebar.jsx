@@ -92,7 +92,7 @@ const Sidebar = () => {
         </button>
         {showNewTask && (
           <div className="fixed overflow-visible z-50  ">
-            <NewTaskAlert cancelNewTask={cancelNewTask} />
+            <NewTaskAlert setShowNewTask={setShowNewTask} cancelNewTask={cancelNewTask} />
           </div>
         )}
 
