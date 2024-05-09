@@ -1,6 +1,6 @@
 "use client"
 import { updateDescription } from "@/app/api/route";
-import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
+import { PaperAirplaneIcon, XCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 
 const CommentOnTask = ({ commentPosition, task, setShowComment, onSubmit }) => {
@@ -31,6 +31,13 @@ const CommentOnTask = ({ commentPosition, task, setShowComment, onSubmit }) => {
         ></textarea>
       </div>
       <div className="flex justify-end">
+        <button
+          onClick={() => {
+            setShowComment(false);
+          }}
+        >
+          <XMarkIcon width={24} height={24} />  
+        </button>
         <button type="submit">
           <PaperAirplaneIcon width={24} height={24} />{" "}
         </button>
