@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import * as React from "react";
 import { useState } from "react";
-import { findfilterTask } from "@/app/api/route";
+import { findfilterTaskStatusinPending } from "@/app/api/route";
 import { useEffect } from "react";
 import { FilterContext } from "@/context/FilterContext";
 import TaskView from "../View/TaskView";
@@ -14,23 +14,17 @@ const ListForm = () => {
   const handleChange = (event) => {
     setValue(event.target.value);
   };
-  const fetchFilteredTasks = () => {
-    findfilterTask(filters)
-      .then((allTasks) => {
-        setTasks(allTasks);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+
+  const fetchFilteredTasksStatus = () => {
+    findfilterTaskStatusinPending(filters).then((allTasks) => {setTasks(allTasks);}).catch((error) => {console.log(error);});
   };
 
   useEffect(() => {
-    fetchFilteredTasks();
+    fetchFilteredTasksStatus();
   }, [filters]);
   return (
-    <Fragment>
-     
-      <TaskView tasks={tasks} setTasks={setTasks} />
+    <Fragment>     
+      <TaskView tasks={tasks} setTasks={setTasks}/>
     </Fragment>
   );
 };
