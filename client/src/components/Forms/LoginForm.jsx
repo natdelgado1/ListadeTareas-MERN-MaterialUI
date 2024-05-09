@@ -2,7 +2,6 @@
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
@@ -13,9 +12,10 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useRouter } from "next/navigation";
 import { ThemeProvider } from "@emotion/react";
-import { theme } from "@/theme";
+import { theme2 } from "@/theme";
 import Link from "next/link";
 import { login } from "@/app/api/route";
+import { useState } from "react";
 
 const Copyright = (props) => {
   return (
@@ -37,11 +37,11 @@ const Copyright = (props) => {
 
 const LoginForm = () => {
   const router = useRouter();
+  const [error, setError] = useState(null);
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const data = {
-      name: formData.get("name"),
       email: formData.get("email"),
       password: formData.get("password"),
     };
@@ -50,97 +50,86 @@ const LoginForm = () => {
       if (result.user) {
         localStorage.setItem("user", JSON.stringify(result.user));
       }
-      router.push("/");
+      router.push("/list");
     } catch (error) {
+      setError(error.message);
       console.log(error);
     }
   };
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: "contained" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
+    <Container component="main" maxWidth="xs">
+      <Box
+        sx={{
+          marginTop: 5,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: "contained" }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Sign in
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+          />
+
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+          />
+          <FormControlLabel
+            control={<Checkbox value="remember" color="primary" />}
+            label="Remember me"
+          />
+          {error && (
+            <h1 className="border-l-2 bg-gray-300 border-l-red-700 px-2 py-1 mt-2">
+              {error}
+            </h1>
+          )}
+
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            sx={{ mt: 3, mb: 2 }}
+            id="loginButton"
           >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="name"
-              label="Name"
-              defaultValue={"Natalia Delgado"}
-              name="name"
-              autoComplete="name"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              defaultValue={"ilanaadelgad0@gmail.com"}
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              defaultValue={"Yuli2020/"}
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Login
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href={"/passwordReset"} variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href={"/register"} variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
+            Login
+          </Button>
+          <Grid container>
+            <Grid item xs>
+              <Link href={"/passwordReset"} variant="body2">
+                Forgot password?
+              </Link>
             </Grid>
-          </Box>
+            <Grid item>
+              <Link href={"/register"} variant="body2">
+                {"Don't have an account? Sign Up"}
+              </Link>
+            </Grid>
+          </Grid>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
-      </Container>
-    </ThemeProvider>
+      </Box>
+      <Copyright sx={{ mt: 8, mb: 4 }} />
+    </Container>
   );
 };
 export default LoginForm;
