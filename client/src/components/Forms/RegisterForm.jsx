@@ -14,6 +14,7 @@ import {  ThemeProvider } from '@mui/material/styles';
 import { theme } from '@/theme';
 import { register } from '@/app/api/route';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const Copyright = (props) => {
   return (
@@ -31,6 +32,7 @@ const Copyright = (props) => {
 
 
 const RegisterForm = () => {
+  const router= useRouter();
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -42,6 +44,7 @@ const RegisterForm = () => {
     };
     try {
     const result= await register(data);
+    router.push("/login");
     } catch (error) {
         console.log(error);
     }
@@ -116,6 +119,7 @@ const RegisterForm = () => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              id='registerButton'
             >
               Sign Up
             </Button>
