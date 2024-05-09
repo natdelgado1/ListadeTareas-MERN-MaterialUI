@@ -34,3 +34,12 @@
 .styleButtonTask-lila{
     border-color: #9C27B0;
 }
+
+#loginButton{
+    background-color: #9C27B0 !important; 
+    color: white;
+}
+#registerButton{
+    background-color: #9C27B0 !important; 
+    color: white;
+}
