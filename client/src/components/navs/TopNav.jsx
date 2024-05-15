@@ -11,16 +11,28 @@ import { theme } from '@/theme';
 import { ThemeProvider } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useState } from 'react';
+import Sidebar from './Sidebar';
+import { useEffect } from 'react';
 
 const TopNav = () =>  {
     const router = useRouter();
+    const [user, setUser] = useState(undefined);
+    useEffect(() => {
+      const userLocalStorage = JSON.parse(localStorage.getItem("user"));
+      setUser(userLocalStorage);
+    }, []);
+    const[showSidebar, setShowSidebar] = useState(false);
+    const handleSidebar= () =>{
+        setShowSidebar(!showSidebar);
+    }
     const handleRedirect = (route) => {
         router.push(route);
     }
 
   return (
     <ThemeProvider theme={theme}>
-      <AppBar className='sm:hidden' position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+      <AppBar className='sm:hidden z-50'  sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
           <IconButton
             size="large"
@@ -28,15 +40,22 @@ const TopNav = () =>  {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
+            onClick={() => handleSidebar()}
           >
             <MenuIcon />
+            
           </IconButton>
+            {
+              showSidebar && (
+                <Sidebar showSidebar={showSidebar} handleSidebar={handleSidebar}/>
+              )
+            }
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link href={"/"} style={{color: "white", textDecoration: "none"}}>
                 Lista de Tareas
             </Link>
           </Typography>
-          <Button color="inherit" onClick={() => handleRedirect("/login")}>Login</Button>
+          <Button className={`${user? "max-lg:hidden": ""}`} color="inherit" onClick={() => handleRedirect("/login")}>Login</Button>
         </Toolbar>
       </AppBar>
     </ThemeProvider>
