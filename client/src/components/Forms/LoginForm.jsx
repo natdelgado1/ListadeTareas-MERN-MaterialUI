@@ -14,8 +14,9 @@ import { useRouter } from "next/navigation";
 import { ThemeProvider } from "@emotion/react";
 import { theme2 } from "@/theme";
 import Link from "next/link";
-import { login } from "@/app/api/route";
+import { login as apiLogin } from "@/app/api/route";
 import { useState } from "react";
+import { useUser } from "@/context/UserContext";
 
 const Copyright = (props) => {
   return (
@@ -38,6 +39,9 @@ const Copyright = (props) => {
 const LoginForm = () => {
   const router = useRouter();
   const [error, setError] = useState(null);
+  const { user, login, logout } = useUser();
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -46,9 +50,9 @@ const LoginForm = () => {
       password: formData.get("password"),
     };
     try {
-      const result = await login(data);
+      const result = await apiLogin(data);
       if (result.user) {
-        localStorage.setItem("user", JSON.stringify(result.user));
+        login(result.user)
       }
       router.push("/list");
     } catch (error) {
@@ -110,7 +114,7 @@ const LoginForm = () => {
             variant="contained"
             color="primary"
             sx={{ mt: 3, mb: 2 }}
-            id="loginButton"
+            className="purpleButton"
           >
             Login
           </Button>
