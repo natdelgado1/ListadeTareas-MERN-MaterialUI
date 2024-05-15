@@ -13,6 +13,7 @@ module.exports.createTask = async (req, res) => {
 };
 
 module.exports.findTask = async (req, res) => {
+
     try {
         const findTask = await Task.findOne({ _id: req.params.id });
         if (!findTask) {
@@ -26,8 +27,9 @@ module.exports.findTask = async (req, res) => {
 };
 
 module.exports.findAllTasks = async (req, res) => {
+    const userId = req.body.userId;
     try {
-        const tasks = await Task.find();
+        const tasks = await Task.find({userId: userId});
         res.status(200).json(tasks);
     } catch (error) {
         console.log(error);
@@ -81,6 +83,7 @@ module.exports.deleteTask = async (req, res) => {
 };
 
 module.exports.getFilteredTasks = async (req, res) => {
+    const userId = req.body.userId;
     let dateFrom = moment();
     let dateTo = moment();
     let dateType = req.params.dateType;
@@ -102,7 +105,8 @@ module.exports.getFilteredTasks = async (req, res) => {
         const tasks = await Task.aggregate([
             {
                 $match: {
-                    taskDate: { $gte: dateFrom.toDate(), $lte: dateTo.toDate() }
+                    taskDate: { $gte: dateFrom.toDate(), $lte: dateTo.toDate() },
+                    userId: userId
                 }
             },
             {
