@@ -19,16 +19,19 @@ import {
   CalendarDaysIcon,
   CalendarIcon,
   PlusCircleIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
-import NewTaskAlert from "../alerts/newTaskAlert";
+import { useRouter } from "next/navigation";
+import { useUser } from "@/context/UserContext";
+import NewTaskModal from "../Modals/newTaskModal";
 
 const drawerWidth = 280;
-
-const Sidebar = () => {
+const Sidebar = ({showSidebar, handleSidebar}) => {
   const { updateFilters, filters } = useContext(FilterContext);
-  const [user, setUser] = useState(undefined);
+  const {user} = useUser();
   const [showNewTask, setShowNewTask] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const router = useRouter();
 
   const handleMouseEnter = () => {
     setHovered(true);
@@ -43,7 +46,7 @@ const Sidebar = () => {
   };
 
   const cancelNewTask = () => {
-    setShowNewTask(false);
+    toggleNewTask();
   };
 
   const filterButtons = [
@@ -52,14 +55,22 @@ const Sidebar = () => {
     { title: "Month", value: 3, icon: <CalendarMonthOutlined /> },
     { title: "Year", value: 4, icon: <CalendarMonthSharp /> },
   ];
+  const logout = () => {
+    localStorage.removeItem("user"); 
+    router.push("/login"); 
+  };
 
-  useEffect(() => {
-    const userLocalStorage = JSON.parse(localStorage.getItem("user"));
-    setUser(userLocalStorage);
-  }, []);
+  const handleFiltButton = (button) => {
+    updateFilters({ ...filters, date: button.value });
+    if(handleSidebar){
+      handleSidebar();
+    }
+  }
   return (
-    <ThemeProvider theme={fondoLila}>
+    <ThemeProvider theme={fondoLila}
+    >
       <Drawer
+        className={` ${!showSidebar ? "max-lg:hidden": "fixed" } max-lg:z-10`}
         variant="permanent"
         sx={{
           width: drawerWidth,
@@ -71,7 +82,13 @@ const Sidebar = () => {
           },
         }}
       >
-        <Toolbar className="sm:hidden" />
+        <Toolbar className="hidden" />
+        {
+          showSidebar &&
+        (<button className="w-4 ring-1 ring-purple-400" onClick={handleSidebar}>
+          <XMarkIcon className="text-purple-400"/> 
+        </button>)
+        }
         <div className="flex gap-2 p-2 ">
           <div className="w-max justify-center">
             <div className=" fondo-lila h-14 w-14 rounded-full flex justify-center items-center text-white text-2xl font-semibold">
@@ -92,7 +109,7 @@ const Sidebar = () => {
         </button>
         {showNewTask && (
           <div className="fixed overflow-visible z-50  ">
-            <NewTaskAlert setShowNewTask={setShowNewTask} cancelNewTask={cancelNewTask} />
+            <NewTaskModal setShowNewTask={setShowNewTask} cancelNewTask={cancelNewTask} handleSidebar={handleSidebar} />
           </div>
         )}
 
@@ -107,7 +124,7 @@ const Sidebar = () => {
                 }}
                 disablePadding
                 onClick={(e) =>
-                  updateFilters({ ...filters, date: button.value })
+                  handleFiltButton(button,e)
                 }
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
@@ -120,6 +137,7 @@ const Sidebar = () => {
             ))}
           </List>
         </Box>
+        <button className="shadow-lg z-50 w-1/3 fondo-lila max-lg:button-10 absolute bottom-5 self-center text-white h-8 rounded-xl text-center"  onClick={(e)=> logout() }>Logout</button>
       </Drawer>
     </ThemeProvider>
   );
