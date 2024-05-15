@@ -1,18 +1,18 @@
 "use client";
 import Link from "next/link";
-import { Fragment } from "react";
 
 const TopNavList = () => {
   return (
-    <div className="flex text-[#4D4D4D] gap-3 py-2 mb-4 border-b-[3px] ">
+    <div className="flex gap-1 px-2 bg-[#fef9ff] items-center pb-1 pt-4 max-lg:mt-12">
       <Link
-        className="px-6 rounded-md py-1 hover:bg-gray-200 font-semibold"
+        className="pr-2 rounded-md text-lg py-1 hover:bg-gray-200 font-semibold"
         href={"/list"}
       >
-        List
+        List 
       </Link>
+      <h1 className="pr-2 text-center">•</h1>
       <Link
-        className="px-6 rounded-md py-1 hover:bg-gray-200 font-semibold"
+        className=" text-lg rounded-md py-1 hover:bg-gray-200 font-semibold"
         href={"/table"}
       >
         Manage
