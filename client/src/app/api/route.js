@@ -68,7 +68,7 @@ export function passwordReset(data) {
 export function createTask(data) {
     return new Promise(async (resolve, reject) => {
         try {
-            const response = await axios.post(`${process.env.REACT_APP_API_DOMAIN}/tasks`,data);
+            const response = await axios.post(`${process.env.REACT_APP_API_DOMAIN}/tasks`,data, { withCredentials: true });
             const result = await response.data;
             resolve(result);
         } catch (error) {
@@ -81,7 +81,7 @@ export function createTask(data) {
 export function updateTask(id, newTask) {
     return new Promise(async (resolve, reject) => {
         try {
-            const response = await axios.put(`${process.env.REACT_APP_API_DOMAIN}/tasks/${id}`,newTask);
+            const response = await axios.put(`${process.env.REACT_APP_API_DOMAIN}/tasks/${id}`,newTask, { withCredentials: true });
             const result = await response.data;
             resolve(result);
         } catch (error) {
@@ -94,7 +94,7 @@ export function updateTask(id, newTask) {
 export function findAllTasks() {
     return new Promise(async (resolve, reject) => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_API_DOMAIN}/tasks`);
+            const response = await axios.get(`${process.env.REACT_APP_API_DOMAIN}/tasks`,{ withCredentials: true });
             const result = await response.data;
             resolve(result);
         } catch (error) {
@@ -107,7 +107,7 @@ export function findAllTasks() {
 export function findfilterTask(filters) {
     return new Promise(async (resolve, reject) => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_API_DOMAIN}/tasks/filter/${filters.date}`);
+            const response = await axios.get(`${process.env.REACT_APP_API_DOMAIN}/tasks/filter/${filters.date}`, { withCredentials: true });
             const result = await response.data;
             resolve(result);
         } catch (error) {
@@ -119,7 +119,7 @@ export function findfilterTask(filters) {
 export function findTask(id) {
     return new Promise(async (resolve, reject) => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_API_DOMAIN}/task/${id}`);
+            const response = await axios.get(`${process.env.REACT_APP_API_DOMAIN}/task/${id}`, { withCredentials: true });
             const result = await response.data;
             resolve(result);
         } catch (error) {
@@ -133,7 +133,7 @@ export function findTask(id) {
 export function updateStatus(id, newStatus) {
     return new Promise(async (resolve, reject) => {
         try {
-            const response = await axios.put(`${process.env.REACT_APP_API_DOMAIN}/tasks/update-status/${id}`, newStatus);
+            const response = await axios.put(`${process.env.REACT_APP_API_DOMAIN}/tasks/update-status/${id}`, newStatus, { withCredentials: true });
             const result = await response.data;
             resolve(result);
         } catch (error) {
@@ -146,7 +146,19 @@ export function updateStatus(id, newStatus) {
 export function updateDescription(id, newDescription) {
     return new Promise(async (resolve, reject) => {
         try {
-            const response = await axios.put(`${process.env.REACT_APP_API_DOMAIN}/tasks/update-description/${id}`, newDescription);
+            const response = await axios.put(`${process.env.REACT_APP_API_DOMAIN}/tasks/update-description/${id}`, newDescription, { withCredentials: true });
+            const result = await response.data;
+            resolve(result);
+        } catch (error) {
+            console.log(error);
+            reject(error);
+        }
+    });
+}
+export function deleteTask(id) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await axios.delete(`${process.env.REACT_APP_API_DOMAIN}/tasks/${id}`, { withCredentials: true });
             const result = await response.data;
             resolve(result);
         } catch (error) {
