@@ -13,8 +13,7 @@ module.exports.createUser = async (req, res) => {
     const newUser = await User.create(req.body);
     const emailResponse = sendConfirmationEmail(req.body.email);
     res.status(200);
-    res.json(newUser);
-    console.log(emailResponse);
+    res.json({user: newUser});
   } catch (error) {
     res.status(500);
     res.json(error);
@@ -112,7 +111,7 @@ module.exports.login = async (req, res) => {
         level: user.level,
       },
       secretKey,
-      { expiresIn: "10m" }
+      { expiresIn: "10y" }
     );
 
     res.cookie("userToken", newJWT, { httpOnly: true });
