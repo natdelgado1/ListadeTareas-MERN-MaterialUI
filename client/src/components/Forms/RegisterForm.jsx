@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -15,6 +13,7 @@ import { theme } from '@/theme';
 import { register } from '@/app/api/route';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useUser } from '@/context/UserContext';
 
 const Copyright = (props) => {
   return (
@@ -33,6 +32,8 @@ const Copyright = (props) => {
 
 const RegisterForm = () => {
   const router= useRouter();
+  const { user, login, logout } = useUser();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -43,13 +44,22 @@ const RegisterForm = () => {
       confirmPassword: formData.get('confirmPassword'),
     };
     try {
-    const result= await register(data);
-    router.push("/login");
+      const result= await register(data);
+      if(result.user){
+        login(result.user);
+        router.push('/list');
+      }
     } catch (error) {
         console.log(error);
     }
 
   };  
+
+  useEffect(()=>{
+    if(user){
+      router.push('/list');
+    }
+  },[]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -119,7 +129,7 @@ const RegisterForm = () => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              id='registerButton'
+              className='purpleButton'
             >
               Sign Up
             </Button>
