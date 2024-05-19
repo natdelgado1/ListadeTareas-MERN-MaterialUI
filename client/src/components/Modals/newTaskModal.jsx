@@ -100,7 +100,7 @@ const NewTaskModal = ({cancelNewTask, setShowNewTask, handleSidebar}) => {
                     taskDate ? "text-black" : "text-white"
                   } w-full px-4 py-2 border rounded-md outline-none block `}
                   value={taskDate}
-                  onChange={() => setTaskDate(e.target.value)}
+                  onChange={(e) => setTaskDate(e.target.value)}
                   placeholder="Date"
                 />
               </div>
