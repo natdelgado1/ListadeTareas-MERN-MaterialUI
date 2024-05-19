@@ -13,7 +13,7 @@ const TopNavList = () => {
       <h1 className="pr-2 text-center">•</h1>
       <Link
         className=" text-lg rounded-md py-1 hover:bg-gray-200 font-semibold"
-        href={"/table"}
+        href={"/manage"}
       >
         Manage
       </Link>
