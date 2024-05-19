@@ -77,15 +77,20 @@ const ListView = ({ tasks, setTasks, handleUpdateTask }) => {
   const getGroupTitle = (date) => {
     const diff = getDateDiff(date);
 
-    if (diff === -2) return "Anteayer";
-    else if (diff === -1) return "Ayer";
-    else if (diff === 0) return "Hoy";
-    else if (diff === 1) return "Mañana";
+    if (diff === 2) return "Anteayer";
+    else if (diff === 1) return "Ayer";
+    else if (diff === 0) return "Hoy"
+    else if (diff === -1) return "Mañana";
     else return moment(date).format("dddd, DD [of] MMMM");
   };
 
   const getDateDiff = (date) => {
-    return today.diff(new Date(date), "days");
+    let date1 = moment(date).format("YYYY-MM-DD");
+    let date2 = moment(today).format("YYYY-MM-DD");
+
+    let diff = moment(date2).diff(date1, "days");
+
+    return diff;
   };
 
   return tasks.length > 0 ? (
@@ -106,7 +111,7 @@ const ListView = ({ tasks, setTasks, handleUpdateTask }) => {
                   {getGroupTitle(group._id)}
                 </h1>
                 {getDateDiff(group._id) >= -2 &&
-                  getDateDiff(group._id) <= 2 && <p>{group._id}</p>}
+                  getDateDiff(group._id) <= 2 && <p>{moment(group._id).format('dddd, DD [of] MMMM')}</p>}
               </div>
               <hr className="mt-6 max-lg:mt-3" />
             </Fragment>
