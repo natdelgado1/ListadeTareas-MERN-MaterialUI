@@ -14,6 +14,7 @@ import { register } from '@/app/api/route';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/context/UserContext';
+import { useEffect } from 'react';
 
 const Copyright = (props) => {
   return (
