@@ -1,6 +1,6 @@
 # Proyecto: Lista de Tareas MERN
 
-Este proyecto es una aplicación completa de lista de tareas desarrollada utilizando las tecnologías MERN (MongoDB, Express, React, Node.js), junto con Bootstrap y Tailwind para el diseño de la interfaz de usuario.
+Este proyecto es una aplicación completa de lista de tareas desarrollada utilizando las tecnologías MERN (MongoDB, Express, React, Node.js), junto con Material UI y Tailwind para el diseño de la interfaz de usuario.
 
 ## Características Principales
 
