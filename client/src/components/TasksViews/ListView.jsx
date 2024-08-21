@@ -29,7 +29,7 @@ const ListView = ({ tasks, setTasks, handleUpdateTask }) => {
   const toogleEditAlert = (task) => {
     setShowEditTask(!showEditTask);
     setSelectedTask(task);
-  };
+  };  
   const toggleCommentOnTask = (task) => {
     setShowComment(!showComment);
     let taskComponent = document

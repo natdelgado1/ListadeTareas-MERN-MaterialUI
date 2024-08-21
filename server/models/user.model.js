@@ -47,7 +47,6 @@ UserSchema.pre("validate", function (next) {
   next();
 });
 
-//Antes de guardar verifica que el rol haya llegado como usuario
 UserSchema.pre("save", function (next) {
   bcrypt.hash(this.password, 10).then((hash) => {
     this.password = hash;
